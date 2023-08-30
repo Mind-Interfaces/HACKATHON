@@ -4,7 +4,7 @@ import subprocess
 import sys  # Don't forget to import sys!
 
 def install_package(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+    subprocess.check_call([sys.executable, "-m", "!pip", "install", package])
 
 # List of packages to check
 packages_to_check = ['pygame', 'PyOpenGL', 'requests', 'gradio_client']
