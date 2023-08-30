@@ -1,22 +1,22 @@
 # NO MO REQS, HACKZZZ ON!!
-import importlib
-import subprocess
-import sys  # Don't forget to import sys!
+# import importlib
+# import subprocess
+# import sys  # Don't forget to import sys!
 
-def install_package(package):
-    subprocess.check_call([sys.executable, "-m", "!pip", "install", package])
+# def install_package(package):
+#    subprocess.check_call([sys.executable, "-m", "!pip", "install", package])
 
 # List of packages to check
-packages_to_check = ['pygame', 'PyOpenGL', 'requests', 'gradio_client']
+# packages_to_check = ['pygame', 'PyOpenGL', 'requests', 'gradio_client']
 
 # Loop through each package
-for package in packages_to_check:
-    package_found = importlib.util.find_spec(package)
-    if package_found is None:
-        print(f"Installing {package}...")
-        install_package(package)
-    else:
-        print(f"{package} is already installed.")
+# for package in packages_to_check:
+#    package_found = importlib.util.find_spec(package)
+#    if package_found is None:
+#        print(f"Installing {package}...")
+#        install_package(package)
+#    else:
+#        print(f"{package} is already installed.")
 
 # HACKZ OFF.
 
