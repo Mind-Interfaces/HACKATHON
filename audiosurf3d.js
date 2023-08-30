@@ -80,4 +80,52 @@ function main() {
       player_x -= 0.1;
     }
     if (keys[pygame.K_d]) {
-      player_x += 
+      player_x += 0.1;
+    }
+    if (keys[pygame.K_w]) {
+      player_y += 0.1;
+    }
+    if (keys[pygame.K_s]) {
+      player_y -= 0.1;
+    }
+
+    if (Math.random() > 0.5) {
+      obstacles.push([obstacle_id, Math.random() * 4 - 2, -1.5, -30, 0.2, [0, 1, 0]]);
+      obstacle_id += 1; // Increment the obstacle ID
+    }
+
+    const new_obstacles = [];
+    for (const [obs_id, x, y, z, s, color] of obstacles) {
+      z += 0.1;
+      if (z < 5) {
+
+        if (is_collision(player_x, player_y, 0, x, y, z)) {
+          if (obs_id not in collided_ids) {
+            color = [0.5, 0.5, 0.5]; // Change color to grey upon collision
+            pygame.mixer.music.play();
+            collision_count += 1;
+          }
+          collided_ids.add(obs_id); // Add the collided obstacle ID to the set
+          // Draw the collision count
+          draw_text("Collisions: " + collision_count, display[0] - 30, 10);
+        }
+        new_obstacles.push([obs_id, x, y, z, s, color]); // Update with the new color
+      }
+    }
+    obstacles = new_obstacles;
+
+    pygame.gl.glClear(pygame.GL_COLOR_BUFFER_BIT | pygame.GL_DEPTH_BUFFER_BIT);
+    draw_cube(player_x, player_y, 0, 0.2, [1, 1, 1]); // Player cube is white
+
+    // Draw Obstacles and their IDs
+    for (const [id, x, y, z, s, color] of obstacles) {
+      draw_cube(x, y, z, s, color);
+    }
+
+    // Update the display
+    pygame.display.flip();
+    clock.tick(30);
+  }
+}
+
+main();
