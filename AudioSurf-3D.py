@@ -5,6 +5,27 @@ from OpenGL.GLU import *
 
 import random
 
+# import Gradio
+import requests
+from gradio_client import Client
+
+# The URL to the Gradio server
+server_url = "https://c510c6dd998b3664b1.gradio.live/"
+
+# Check if the server is available
+try:
+    response = requests.get(server_url)
+    if response.status_code == 200:
+        # The server is available; proceed to create the client and predict
+        client = Client(server_url)
+        result = client.predict(fn_index=0)
+        print("Prediction result:", result)
+    else:
+        print("Server is not available. Status Code:", response.status_code)
+except requests.RequestException as e:
+    print("An error occurred while checking the server:", e)
+
+
 # Initialize Pygame and OpenGL
 pygame.init()
 pygame.mixer.init()  # Initialize the mixer module for sound
