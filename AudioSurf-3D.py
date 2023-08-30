@@ -1,6 +1,7 @@
 # NO MO REQS, HACKZZZ ON!!
 import importlib
 import subprocess
+import sys  # Don't forget to import sys!
 
 def install_package(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
