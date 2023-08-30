@@ -1,11 +1,30 @@
+# NO MO REQS, HACKZZZ ON!!
+import importlib
+import subprocess
+
+def install_package(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# List of packages to check
+packages_to_check = ['pygame', 'PyOpenGL', 'requests', 'gradio_client']
+
+# Loop through each package
+for package in packages_to_check:
+    package_found = importlib.util.find_spec(package)
+    if package_found is None:
+        print(f"Installing {package}...")
+        install_package(package)
+    else:
+        print(f"{package} is already installed.")
+
+# HACKZ OFF.
+
+# Now you can import your modules
 import pygame
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
-
 import random
-
-# import Gradio
 import requests
 from gradio_client import Client
 
