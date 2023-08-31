@@ -6,6 +6,8 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 import random
 import requests
+import sys
+
 
 # The URL to the Gradio server
 server_url = "https://47180b0fc10d536932.gradio.live"
@@ -30,7 +32,7 @@ pygame.mixer.init()
 pygame.mixer.music.load("loop.wav")
 pygame.mixer.music.play(loops=-1)
 pong_sound = pygame.mixer.Sound("pong.wav")
-ping_sound = pygame.mixer.Sound('pong.wav')
+ping_sound = pygame.mixer.Sound('ping.wav')
 display = (1920, 1080)
 pygame.display.set_mode(display, DOUBLEBUF | OPENGL | pygame.RESIZABLE)
 
@@ -161,8 +163,6 @@ def main():
 
                 if is_collision(player_x, player_y, player_z, x, y, z):
                     if obs_id not in collided_ids:
-                        color = (0.5, 0.5, 0.5)  # Change color to grey upon collision
-
                         # Check if the color of the obstacle is cyan
                         if color == (0, 1, 1):
                             # Play the different sound
@@ -170,7 +170,7 @@ def main():
                         else:
                             # Play the regular sound
                             pong_sound.play()
-
+                        color = (0.5, 0.5, 0.5)  # Change color to grey upon collision
                         collision_count += 1
                         # Update the list of last collision IDs
                         last_collisions.append(obs_id)
