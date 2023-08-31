@@ -1,17 +1,18 @@
+from gradio_client import Client
 import pygame
 from pygame.locals import *
+
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
 import random
 import requests
-from gradio_client import Client
 
 # The URL to the Gradio server
 server_url = "https://47180b0fc10d536932.gradio.live"
 
-# Check if the server is available
+# Check if the AudioCraft server is available
 try:
     response = requests.get(server_url)
     if response.status_code == 200:
@@ -27,8 +28,12 @@ except requests.RequestException as e:
 
 # Initialize Pygame and OpenGL
 pygame.init()
+
 pygame.mixer.init()
-pygame.mixer.music.load("pong.wav")
+pygame.mixer.music.load("loop.wav")
+pygame.mixer.music.play(loops=-1)
+pong_sound = pygame.mixer.Sound("pong.wav")
+
 display = (1920, 1080)
 pygame.display.set_mode(display, DOUBLEBUF | OPENGL | pygame.RESIZABLE)
 gluPerspective(30, (display[0] / display[1]), 1, 50.0)
@@ -122,7 +127,8 @@ def main():
                 if is_collision(player_x, player_y, 0, x, y, z):
                     if obs_id not in collided_ids:
                         color = (0.5, 0.5, 0.5)  # Change color to grey upon collision
-                        pygame.mixer.music.play()
+                        #pygame.mixer.music.play()
+                        pong_sound.play()
                         collision_count += 1
                     collided_ids.add(obs_id)  # Add the collided obstacle ID to the set
                     # Draw the collision count
