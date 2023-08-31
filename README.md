@@ -1,31 +1,64 @@
-# MusiCube (Pygame Music Generator)
+# MusiCube: Interactive Pygame Music Generator
 
-This is a pygame project that uses the musicgen model from the audiocraft library to generate music based on the user's interactions with a 3D interface. The game consists of a controller cube of white color and collision cubes of green and cyan color. The user can move the controller cube with the arrow keys and collide with the other cubes. Each collision has a different effect on the music generation:
+MusiCube is an innovative pygame project that utilizes the powerful musicgen model from the audiocraft library to create unique musical compositions based on user interactions within a captivating 3D environment. This project offers an engaging musical experience where users can actively participate in the music generation process.
 
-- When the user collides with a green cube, it generates a token of music genre such as soothing, guitar, rock, pop, etc. The token is added to a list of tokens that represents the current musical prompt. For example, if the user collides with three green cubes that generate soothing, guitar, and rock tokens, the prompt will be [soothing, guitar, rock].
-- When the user collides with a cyan cube, it removes the last token from the list of tokens. For example, if the prompt is [soothing, guitar, rock], after colliding with a cyan cube, it will be [soothing, guitar].
-- The user can see their score on the top left corner of the screen. The score is calculated based on the number and type of collisions. Green collisions add points, while cyan collisions subtract points.
-- After some collisions, when the prompt has enough tokens, it is sent to the musicgen model to generate music based on the prompt. The music is played in a loop until a new prompt is generated.
-- The game continues until the user presses the escape key to quit.
+## Project Overview
+
+The core of MusiCube lies in its ability to generate music by analyzing the user's interactions with a dynamic 3D interface. The interface consists of various cubes, each serving a distinct purpose:
+
+- **Controller Cube (White)**: This cube serves as the user's avatar within the 3D space. Users can navigate it using the arrow keys.
+
+- **Collision Cubes (Green and Cyan)**: The environment is adorned with green and cyan cubes. Colliding with these cubes triggers different musical effects.
+
+## User Interactions
+
+MusiCube leverages user interactions to influence the music generation process:
+
+- **Green Cube Collisions**: Upon colliding with a green cube, the musicgen model generates a music genre token such as soothing, guitar, rock, pop, and more. These tokens are collected in a prompt list that serves as the basis for music generation. For example, colliding with green cubes that generate tokens like soothing, guitar, and rock results in the prompt list [soothing, guitar, rock].
+
+- **Cyan Cube Collisions**: Colliding with a cyan cube removes the last token from the prompt list. This interaction allows users to fine-tune their music prompt.
+
+## Scoring System
+
+MusiCube incorporates a scoring system to gamify the experience:
+
+- Green cube collisions add points to the user's score, incentivizing interactions.
+- Cyan cube collisions subtract points, encouraging strategic decisions.
+
+## Music Generation and Playback
+
+The accumulated prompt list is sent to the musicgen model after a series of collisions. The model then generates music based on the provided prompts. The resulting composition is played in a loop until a new prompt is constructed through further interactions.
+
+## Example
+
+Here's a sneak peek of the MusiCube experience:
+
+![MusiCube Example](link_to_your_gif_or_screenshot.gif)
 
 ## Installation and Usage
 
-To set up this project locally and run or make contributions, follow these steps:
+To enjoy the MusiCube experience and even contribute to its development, follow these steps:
 
-1. Create a virtual environment using `python -m venv env` and activate it using `env\Scripts\activate` on Windows or `source env/bin/activate` on Linux/MacOS.
-2. Install the required packages from requirements.txt using `pip install -r requirements.txt`.
-3. Run the script using `python AudioCraft-3D-POC.py`.
+1. Set up a virtual environment using `python -m venv env` and activate it with `env\Scripts\activate` (Windows) or `source env/bin/activate` (Linux/MacOS).
 
-Alternatively, you can download and run the executable file of our game from [here].
+2. Install the necessary packages from requirements.txt using `pip install -r requirements.txt`.
 
-## License
+3. Launch the project by running the script with `python AudioCraft-3D-POC.py`.
 
-This project is licensed under the MIT License - see the [LICENSE] file for details.
+Alternatively, for a hassle-free experience, you can directly download and run the executable file from [here].
 
-## Acknowledgements
+## Licensing
 
-We would like to thank the following sources for their help and inspiration:
+MusiCube operates under the MIT License. For comprehensive licensing details, refer to the [LICENSE] file.
 
-- The audiocraft library for providing the musicgen model that can generate music from text prompts. You can find more information about it [here].
-- The pygame library for providing the tools to create a 3D interface and handle user input. You can find more information about it [here].
-- The pyopengl library for providing the functions to render 3D graphics in pygame. You can find more information about it [here].
+## Acknowledgments
+
+We extend our gratitude to the following sources for their contributions and inspiration:
+
+- The audiocraft library for providing the remarkable musicgen model capable of converting text prompts into musical compositions. Learn more about it [here](https://github.com/facebookresearch/audiocraft).
+
+- The pygame library for equipping us with the tools to construct the immersive 3D interface and manage user input.
+
+- The pyopengl library for furnishing the essential functions to render intricate 3D graphics seamlessly within the pygame framework.
+
+Indulge in the captivating world of MusiCube, where music and interaction harmoniously blend, leading to a novel musical journey for all.
