@@ -111,9 +111,9 @@ def draw_cube(x, y, z, size, color=(1, 1, 1)):
     glEnd()
 
 # Function to draw OpenGL text using bitmap rendering
-def drawText(position, textString):
+def drawText(position, textString, color=(255, 255, 255, 255)):
     font = pygame.font.Font(None, 64)
-    textSurface = font.render(textString, True, (255, 255, 255, 255), (0, 0, 0, 255))
+    textSurface = font.render(textString, True, color, (0, 0, 0, 128))
     textData = pygame.image.tostring(textSurface, "RGBA", True)
     glRasterPos3d(*position)
     glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
@@ -134,7 +134,6 @@ def send_prompt(prompt):
 		#		1337,	# int | float in 'Seed' Number component
 		#		fn_index=14
         #)
-
         return # result
 
 # TURN THE RETURNED DATA INTO A WAV AND LOAD IT INTO PYGAME
@@ -178,10 +177,10 @@ def main():
             sys.exit()
 
         
-        if random.choice([True, False, False, False]):
+        if random.choice([True, False, False, False, False, False, False, False, False, False]):
             # Get the next musical keyword from the cycle
             keyword = next(keyword_cycle) if obstacle_id % 100 != 0 else "SURF!"
-            
+
             color = (0, 1, 0)  # Green by default
             if obstacle_id % 100 == 0:  # Check if it's the 100th cube
                 color = (0, 1, 1)  # Change to Cyan
@@ -189,6 +188,7 @@ def main():
             # Use 'keyword' instead of 'obstacle_id' as the ID for the cube
             obstacles.append([keyword, random.uniform(-4, 4), -1.5, -30, 0.2, color])
             obstacle_id += 1  # Increment the obstacle ID
+
 
             color = (0, 1, 0)  # Green by default
             if obstacle_id % 100 == 0:  # Check if it's the 100th cube
@@ -201,10 +201,21 @@ def main():
             z += 0.1
             if z < 5:
 
-                
+                # Check if the obstacle ID is a numerical value
+                if obs_id.isdigit():
+                    obs_id = "  "
+                    color = (1, 0, 0)  # Change to Red
+
                 if is_collision(player_x, player_y, player_z, x, y, z):
 
                     if obs_id not in collided_ids:
+                        # Check if the color of the obstacle is red
+                        if color == (1, 0, 0):
+                            # Play the different sound
+                            ping_sound.play()
+                            # Clear the prompt list
+                            last_collisions.clear()
+                            collided_ids.clear()
                         # Check if the color of the obstacle is cyan
                         if color == (0, 1, 1):
                             # Play the different sound
@@ -219,13 +230,15 @@ def main():
                         color = (0.5, 0.5, 0.5)  # Change color to grey upon collision
                         collision_count += 1
                         # Update the list of last collision IDs
-                        last_collisions.append(obs_id)
+                        if obs_id != "SURF!":
+                            if obs_id != "  ":
+                                last_collisions.append(obs_id)
                         if len(last_collisions) > 8:
                             last_collisions.pop(0)
+
                     collided_ids.add(obs_id)  # Add the collided obstacle ID to the set
+
                 new_obstacles.append([obs_id, x, y, z, s, color])  # Update with the new color
-
-
 
         obstacles = new_obstacles
 
@@ -236,10 +249,10 @@ def main():
         # Draw Obstacles and their IDs
         for id, x, y, z, s, color in obstacles:
             draw_cube(x, y, z, s, color)
-            drawText((x, y, z), str(id))  # Draw the obstacle ID
+            drawText((x-.2, y, z), str(id),color=(0, 255, 0, 255))  # Draw the obstacle ID
 
-        drawText((-2, 1.5, 0), f'Score: {collision_count}')
-        drawText((-3, -3, 0), f'{hud_text}')
+        drawText((-2, 1.5, 0), f'Score: {collision_count}',color=(255, 255, 255, 255))
+        drawText((-3, -3, 0), f'{hud_text}',color=(255, 255, 255, 255))
 
         # Update the display
         pygame.display.flip()
@@ -255,12 +268,12 @@ def main():
 
         # Draw the 2D text for score
         screen = pygame.display.get_surface()  # Get the current screen surface
-        font = pygame.font.Font("Hack-Regular.ttf", 24)
+        font = pygame.font.Font(None, 24)
         text_surface = font.render(f'SCORE: {collision_count}', True, (255, 255, 255))
         screen.blit(text_surface, (display[0] - 100, 10))
         # Display the last collision IDs on the HUD
         prompt = f"{' '.join(map(str, last_collisions))}"
-        hud_text = f"PROMPT: {prompt}"
+        hud_text = f"{prompt}"
         screen.blit(text_surface, (display[0] - 100, 10))
 
         # Add code here to render the HUD text
@@ -273,3 +286,5 @@ def main():
         clock.tick(30)
 
 main()
+
+
