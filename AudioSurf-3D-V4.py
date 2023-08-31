@@ -37,6 +37,13 @@ display = (1920, 1080)
 pygame.display.set_mode(display, DOUBLEBUF | OPENGL | pygame.RESIZABLE)
 
 # Initialize OpenGL
+
+# Define a list of musical terms to use as IDs for the cubes
+musical_keywords = ["Tempo", "Rhythm", "Melody", "Harmony", "Pitch", "Tone", "Beat", "Chord"]
+# Use the 'cycle' function from itertools to create an infinite loop over the musical_keywords list
+from itertools import cycle
+keyword_cycle = cycle(musical_keywords)
+
 #gluPerspective(30, (display[0] / display[1]), 1, 50.0)
 #glTranslatef(0.0, 0.0, -10)
 gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
@@ -95,18 +102,18 @@ def is_collision(player_x, player_y, player_z, obstacle_x, obstacle_y, obstacle_
 
 # Send Prompt to API OMG WE NEED HELP HERE <<UNDER CONSTRUCTION>>
 def send_prompt(prompt):
-        result = client.predict(
-            	True,	# bool in 'Enable' Checkbox component
-				128,	# int | float in 'BPM' Number component
-                "A",	# str (Option from: ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B']) in 'Key' Dropdown component
-				"Minor",	# str (Option from: ['Major', 'Minor']) in 'Scale' Dropdown component
-				level_name,	# str in 'Global Prompt' Textbox component
-				prompt,	# str in 'Input Text' Textbox component
-				1337,	# int | float in 'Seed' Number component
-				fn_index=14
-        )
+        #result = client.predict(
+        #    	True,	# bool in 'Enable' Checkbox component
+		#		128,	# int | float in 'BPM' Number component
+        #        "A",	# str (Option from: ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B']) in 'Key' Dropdown component
+		#		"Minor",	# str (Option from: ['Major', 'Minor']) in 'Scale' Dropdown component
+		#		level_name,	# str in 'Global Prompt' Textbox component
+		#		prompt,	# str in 'Input Text' Textbox component
+		#		1337,	# int | float in 'Seed' Number component
+		#		fn_index=14
+        #)
 
-        return result
+        return # result
 
 # TURN THE RETURNED DATA INTO A WAV AND LOAD IT INTO PYGAME
 def load_wav(data):
@@ -124,7 +131,6 @@ def loop_conductor():
 def main():
     global player_x, player_y, player_z, obstacles, collision_count, obstacle_id
     clock = pygame.time.Clock()
-    # hud_text= set("A","U","D","I","O","S","U","R","F","3D")
     hud_text = ("A U D I O S U R F 3D")
     while True:
         for event in pygame.event.get():
@@ -149,7 +155,19 @@ def main():
             pygame.quit()
             sys.exit()
 
+        
         if random.choice([True, False, False, False]):
+            # Get the next musical keyword from the cycle
+            keyword = next(keyword_cycle) if obstacle_id % 100 != 0 else "SURF!"
+            
+            color = (0, 1, 0)  # Green by default
+            if obstacle_id % 100 == 0:  # Check if it's the 100th cube
+                color = (0, 1, 1)  # Change to Cyan
+
+            # Use 'keyword' instead of 'obstacle_id' as the ID for the cube
+            obstacles.append([keyword, random.uniform(-4, 4), -1.5, -30, 0.2, color])
+            obstacle_id += 1  # Increment the obstacle ID
+
             color = (0, 1, 0)  # Green by default
             if obstacle_id % 100 == 0:  # Check if it's the 100th cube
                 color = (0, 1, 1)  # Change to Cyan
@@ -161,12 +179,18 @@ def main():
             z += 0.1
             if z < 5:
 
+                
                 if is_collision(player_x, player_y, player_z, x, y, z):
+
                     if obs_id not in collided_ids:
                         # Check if the color of the obstacle is cyan
                         if color == (0, 1, 1):
                             # Play the different sound
                             ping_sound.play()
+                            send_prompt(last_collisions)
+                            # Clear the prompt list
+                            last_collisions.clear()
+                            collided_ids.clear()
                         else:
                             # Play the regular sound
                             pong_sound.play()
