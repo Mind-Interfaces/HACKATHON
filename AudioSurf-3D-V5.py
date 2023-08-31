@@ -66,8 +66,6 @@ musical_keywords = [
 from itertools import cycle
 keyword_cycle = cycle(musical_keywords)
 
-#gluPerspective(30, (display[0] / display[1]), 1, 50.0)
-#glTranslatef(0.0, 0.0, -10)
 gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
 glTranslatef(0.0, 0.0, -5)
 
@@ -177,7 +175,7 @@ def main():
             sys.exit()
 
         
-        if random.choice([True, False, False, False, False, False, False, False, False, False]):
+        if random.choice([True, True, False, False, False, False, False, False, False, False]):
             # Get the next musical keyword from the cycle
             keyword = next(keyword_cycle) if obstacle_id % 100 != 0 else "SURF!"
 
@@ -189,10 +187,7 @@ def main():
             obstacles.append([keyword, random.uniform(-4, 4), -1.5, -30, 0.2, color])
             obstacle_id += 1  # Increment the obstacle ID
 
-
-            color = (0, 1, 0)  # Green by default
-            if obstacle_id % 100 == 0:  # Check if it's the 100th cube
-                color = (0, 1, 1)  # Change to Cyan
+            # DARK CUBES
             obstacles.append([str(obstacle_id), random.uniform(-4, 4), -1.5, -30, 0.2, color])
             obstacle_id += 1  # Increment the obstacle ID
 
@@ -204,13 +199,13 @@ def main():
                 # Check if the obstacle ID is a numerical value
                 if obs_id.isdigit():
                     obs_id = "  "
-                    color = (1, 0, 0)  # Change to Red
+                    color = (0, 0.25, 0)  # Change to DARK GREEN
 
                 if is_collision(player_x, player_y, player_z, x, y, z):
 
                     if obs_id not in collided_ids:
                         # Check if the color of the obstacle is red
-                        if color == (1, 0, 0):
+                        if color == (0, 0.25, 0):
                             # Play the different sound
                             ping_sound.play()
                             # Clear the prompt list
