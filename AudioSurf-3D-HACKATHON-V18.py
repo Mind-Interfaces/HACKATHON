@@ -25,7 +25,6 @@ try:
 except requests.RequestException as e:
     print("An error occurred while checking the server:", e)
 
-
 # Initialize Pygame and OpenGL
 pygame.init()
 pygame.mixer.init()
@@ -33,10 +32,9 @@ pygame.mixer.music.load("loop.wav")
 pygame.mixer.music.play(loops=-1)
 pong_sound = pygame.mixer.Sound("pong.wav")
 ping_sound = pygame.mixer.Sound('ping.wav')
+surf_sound = pygame.mixer.Sound('surf.wav')
 display = (1920, 1080)
 pygame.display.set_mode(display, DOUBLEBUF | OPENGL | pygame.RESIZABLE)
-
-# Initialize OpenGL
 
 # Define a list of musical terms to use as IDs for the cubes
 musical_keywords = [
@@ -64,9 +62,48 @@ musical_keywords = [
     "Stratocaster", "LesPaul", "Telecaster", "Rhodes", "Hammond",
 
     # Synths and Sound Machines
-    "Korg", "Yamaha", "Roland", "Moog", "Nord",
-    "Arp", "Prophet", "Oberheim", "Wavetable", "FM8",
+    "Korg", "Yamaha", "Roland", "Moog", "Nord", "Arp", "Prophet", "Oberheim", "Wavetable",
+    "FM8", "Kurzweil", "Analog", "Digital", "Sampler", "Drum Machine", "Sequencer", "Groovebox",
+    "Modular", "Polyphonic", "Monophonic", "Modulation", "Filter", "Envelope", "LFO", "Delay",
+    "Reverb", "Chorus", "Phaser", "Flanger", "Vocoder", "Compressor", "Noise", "Oscillator",
+    "Resonance", "Cutoff", "Pitch", "ModWheel", "Arpeggiator", "Sustain", "Release", "Attack",
+    "Decay", "Portamento", "MIDI", "USB", "CV/Gate", "Analog to Digital-Converter", "MIDI Controller",
+    "Analog Synth", "Digital Synth", "Virtual Synth", "Audio Interface", "DAW", "Studio Monitor",
+    "Headphones", "Mixing Console", "Patch Bay", "Effects Pedal", "Guitar Amp", "Bass Amp",
+    "Drum Kit", "Sampler", "Turntable", "Vinyl Record", "Cassette Tape", "CDJ", "MP3 Player",
+    "MIDI Keyboard", "Drum Pad", "Sampler", "Sequencer", "Groovebox", "Music Production Software",
+    "Audio Plugin", "Soundbank", "Sample Pack", "Backing Track", "DAW Template", "Loop",
+    "Sampler", "Mixing Board", "Equalizer", "Mastering", "Studio", "Monitor", "Headphones",
+    "Audio Interface", "MIDI Keyboard", "Drum Pad", "Microphone", "Synthesizer", "Guitar",
+    "Bass", "Drums", "Piano", "Keyboard", "Saxophone", "Trumpet", "Violin", "Cello", "Harp",
+    "Accordion", "Banjo", "Mandolin", "Ukulele", "Harmonica", "Didgeridoo", "Xylophone",
+    "Marimba", "Tambourine", "Claves", "Cowbell", "Triangle",    
 
+    # Feelings To Describe Sound
+    "Euphoric", "Enchanting", "Melancholic", "Hypnotic", "Serene", "Energizing", "Blissful",
+    "Captivating", "Nostalgic", "Soothing", "Uplifting", "Intense", "Enthralling", "Transcendent",
+    "Dynamic", "Whimsical", "Ethereal", "Powerful", "Radiant", "Enigmatic", "Mesmerizing",
+    "Awe-inspiring", "Evocative", "Vibrant", "Spellbinding", "Breathtaking", "Thought-provoking",
+    "Immersive", "Pulsating", "Resonant", "Groovy", "Tranquil", "Haunting", "Mellow", "Trippy",
+    "Funky", "Dreamy", "Atmospheric", "Infectious", "Cinematic", "Harmonious", "Lively",
+    "Intriguing", "Exhilarating", "Majestic", "Eclectic", "Energetic", "Reflective", "Groove-laden",
+    "Blissful", "Enveloping", "Rich", "Satisfying", "Swirling", "Rhythmic", "Melodic",
+    "Sensational", "Exquisite", "Enchanting", "Sparkling", "Lush", "Hypnotizing", "Captivating",
+    "Emotive", "Spirited", "Dazzling", "Rapturous", "Thrilling", "Alluring", "Spellbinding",
+    "Arousing", "Atmospheric", "Spellbinding", "Dynamic", "Exhilarating", "Melancholic",
+    "Breathtaking", "Enthralling", "Mesmerizing", "Enveloping", "Enchanting", "Serene", "Hypnotic",
+    "Tranquil", "Radiant", "Whimsical", "Blissful", "Evocative", "Euphoric", "Uplifting",
+    "Intriguing", "Resonant", "Infectious", "Trippy", "Dreamy", "Majestic", "Groove-laden",
+    "Reflective", "Spirited", "Sparkling", "Lush", "Dazzling", "Rapturous", "Thrilling",
+    "Alluring", "Arousing", "Sensational", "Exquisite",
+	
+    # Rhythms
+    "Steady", "Syncopated", "Polyrhythmic", "Offbeat", "Swing", "Shuffle", "Stomp", "Pulse",
+    "Driving", "Laid-back", "Groovy", "Complex", "Energetic", "Upbeat", "Danceable", "Infectious",
+    "Rhythmic", "Polyphonic", "Hypnotic", "Irregular", "Synchronic", "Staccato", "Legato",
+    "Syncopated", "Pulsating", "Syncopated", "Lively", "Dynamic", "Percussive", "Frenetic",
+    "Syncopated", "Rhythmic", "Melodic", "Steady", "Groove",
+	
     # Elements of a Song
     "Intro", "Verse", "PreChorus", "Chorus", "Bridge",
     "Outro", "Breakdown", "Hook", "Solo", "Adlib"
@@ -76,10 +113,9 @@ musical_keywords = [
 from itertools import cycle
 keyword_cycle = cycle(musical_keywords)
 
+# Apply tilt
 gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
 glTranslatef(0.0, 0.0, -5)
-
-# Apply tilt
 tilt = 45
 glPushMatrix()
 glRotatef(tilt, 10, 0, 0)
@@ -90,7 +126,7 @@ player_z = 0
 obstacles = []
 
 collided_ids = set()
-last_collisions =[]  # To store the IDs of the last bstacle collisions
+last_collisions =[]  # To store the IDs of the last obstacle collisions
 collision_count = 0 # To store the total number of collisions
 obstacle_id = 0  # To store the ID of the obstacle
 
@@ -161,6 +197,7 @@ def main():
     global player_x, player_y, player_z, obstacles, collision_count, obstacle_id
     clock = pygame.time.Clock()
     hud_text = ("A U D I O S U R F 3D")
+    score = 0  # Initialize the score
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -209,13 +246,13 @@ def main():
                 # Check if the obstacle ID is a numerical value
                 if obs_id.isdigit():
                     obs_id = "  "
-                    color = (0, 0.25, 0)  # Change to DARK GREEN
+                    color = (0, 0.42, 0)  # Change to DARK GREEN
 
                 if is_collision(player_x, player_y, player_z, x, y, z):
 
                     if obs_id not in collided_ids:
                         # Check if the color of the obstacle is red
-                        if color == (0, 0.25, 0):
+                        if color == (0, 0.42, 0):
                             # Play the different sound
                             ping_sound.play()
                             # Clear the prompt list
@@ -224,8 +261,10 @@ def main():
                         # Check if the color of the obstacle is cyan
                         if color == (0, 1, 1):
                             # Play the different sound
-                            ping_sound.play()
+                            surf_sound.play()
                             send_prompt(last_collisions)
+                            # Add 1000 points for each keyword in the list
+                            score += len(last_collisions) * 1000
                             # Clear the prompt list
                             last_collisions.clear()
                             collided_ids.clear()
@@ -233,6 +272,8 @@ def main():
                             # Play the regular sound
                             pong_sound.play()
                         color = (0.5, 0.5, 0.5)  # Change color to grey upon collision
+                                                    # Add 1000 points for each keyword in the list
+                        score += 10
                         collision_count += 1
                         # Update the list of last collision IDs
                         if obs_id != "SURF!":
@@ -256,7 +297,7 @@ def main():
             draw_cube(x, y, z, s, color)
             drawText((x-.2, y, z), str(id),color=(0, 255, 0, 255))  # Draw the obstacle ID
 
-        drawText((-2, 1.5, 0), f'Score: {collision_count}',color=(255, 255, 255, 255))
+        drawText((-2, 1.5, 0), f'Score: {score}',color=(255, 255, 255, 255))
         drawText((-3, -3, 0), f'{hud_text}',color=(255, 255, 255, 255))
 
         # Update the display
@@ -281,8 +322,6 @@ def main():
         hud_text = f"{prompt}"
         screen.blit(text_surface, (display[0] - 100, 10))
 
-        # Add code here to render the HUD text
-
         # Switch back to 3D rendering
         glPopMatrix()
         glMatrixMode(GL_PROJECTION)
@@ -291,5 +330,3 @@ def main():
         clock.tick(30)
 
 main()
-
-
