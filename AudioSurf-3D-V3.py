@@ -9,7 +9,7 @@ import requests
 
 # The URL to the Gradio server
 server_url = "https://47180b0fc10d536932.gradio.live"
-
+level_name = "Minimal Loop"
 # Check if the AudioCraft server is available
 try:
     response = requests.get(server_url)
@@ -42,10 +42,11 @@ glRotatef(tilt, 10, 0, 0)
 
 player_x = 0
 player_y = -1.5
+player_z = 0
 obstacles = []
 
 collided_ids = set()
-last_ten_collisions =[]  # To store the IDs of the last ten obstacle collisions
+last_collisions =[]  # To store the IDs of the last bstacle collisions
 collision_count = 0 # To store the total number of collisions
 obstacle_id = 0  # To store the ID of the obstacle
 
@@ -85,9 +86,36 @@ def drawText(position, textString):
 def is_collision(player_x, player_y, player_z, obstacle_x, obstacle_y, obstacle_z, threshold=0.4):
     return abs(player_x - obstacle_x) < threshold and abs(player_y - obstacle_y) < threshold and abs(player_z - obstacle_z) < threshold
 
+# Send Prompt to API OMG WE NEED HELP HERE <<UNDER CONSTRUCTION>>
+def send_prompt(prompt):
+        result = client.predict(
+            	True,	# bool in 'Enable' Checkbox component
+				128,	# int | float in 'BPM' Number component
+                "A",	# str (Option from: ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B']) in 'Key' Dropdown component
+				"Minor",	# str (Option from: ['Major', 'Minor']) in 'Scale' Dropdown component
+				level_name,	# str in 'Global Prompt' Textbox component
+				prompt,	# str in 'Input Text' Textbox component
+				1337,	# int | float in 'Seed' Number component
+				fn_index=14
+        )
+
+        return result
+
+# TURN THE RETURNED DATA INTO A WAV AND LOAD IT INTO PYGAME
+def load_wav(data):
+     pygame.mixer.music.load(data)
+     pygame.mixer.music.play(loops=-1)
+
+# Loop conductor to send prompt and load wav
+def loop_conductor():
+    while True:
+        prompt = last_collisions
+        result = send_prompt(prompt)
+        load_wav(result)
+
 # Main Function
 def main():
-    global player_x, player_y, obstacles, collision_count, obstacle_id
+    global player_x, player_y, player_z, obstacles, collision_count, obstacle_id
     clock = pygame.time.Clock()
     # hud_text= set("A","U","D","I","O","S","U","R","F","3D")
     hud_text = ("A U D I O S U R F 3D")
@@ -102,10 +130,17 @@ def main():
             player_x -= 0.1
         if keys[pygame.K_d]:
             player_x += 0.1
-        if keys[pygame.K_w]:
+        if keys[pygame.K_UP]:
             player_y += 0.1
-        if keys[pygame.K_s]:
+        if keys[pygame.K_DOWN]:
             player_y -= 0.1
+        if keys[pygame.K_w]:
+            player_z -= 0.1
+        if keys[pygame.K_s]:
+            player_z += 0.1
+        if keys[pygame.K_ESCAPE]:
+            pygame.quit()
+            sys.exit()
 
         if random.choice([True, False]):
             obstacles.append([str(obstacle_id), random.uniform(-4, 4), -1.5, -30, 0.2, (0, 1, 0)])
@@ -116,16 +151,16 @@ def main():
             z += 0.1
             if z < 5:
 
-                if is_collision(player_x, player_y, 0, x, y, z):
+                if is_collision(player_x, player_y, player_z, x, y, z):
                     if obs_id not in collided_ids:
                         color = (0.5, 0.5, 0.5)  # Change color to grey upon collision
                         #pygame.mixer.music.play()
                         pong_sound.play()
                         collision_count += 1
-                        # Update the list of last ten collision IDs
-                        last_ten_collisions.append(obstacle_id)
-                        if len(last_ten_collisions) > 10:
-                            last_ten_collisions.pop(0)
+                        # Update the list of last collision IDs
+                        last_collisions.append(obs_id)
+                        if len(last_collisions) > 8:
+                            last_collisions.pop(0)
                     collided_ids.add(obs_id)  # Add the collided obstacle ID to the set
                 new_obstacles.append([obs_id, x, y, z, s, color])  # Update with the new color
 
@@ -135,7 +170,7 @@ def main():
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        draw_cube(player_x, player_y, 0, 0.2, color=(1, 1, 1))  # Player cube is white
+        draw_cube(player_x, player_y, player_z, 0.2, color=(1, 1, 1))  # Player cube is white
 
         # Draw Obstacles and their IDs
         for id, x, y, z, s, color in obstacles:
@@ -162,8 +197,8 @@ def main():
         font = pygame.font.Font("Hack-Regular.ttf", 24)
         text_surface = font.render(f'SCORE: {collision_count}', True, (255, 255, 255))
         screen.blit(text_surface, (display[0] - 100, 10))
-        # Display the last ten collision IDs on the HUD
-        hud_text = f"PROMPT: {' '.join(map(str, last_ten_collisions))}"
+        # Display the last collision IDs on the HUD
+        hud_text = f"PROMPT: {' '.join(map(str, last_collisions))}"
         screen.blit(text_surface, (display[0] - 100, 10))
 
         # Add code here to render the HUD text
