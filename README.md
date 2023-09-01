@@ -43,7 +43,7 @@ The accumulated prompt list is sent to the musicgen model after a series of coll
 
 Here's a sneak peek of the MusiCube experience:
 
-![MusiCube Example](link_to_your_gif_or_screenshot.gif)
+![MusiCube Example](http://mind-interfaces.com/cubes/audiosurf-3d-poc.png)
 
 
 ## Demo
