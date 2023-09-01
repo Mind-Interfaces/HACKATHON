@@ -85,9 +85,11 @@ Indulge in the captivating world of MusiCube, where music and interaction harmon
 ## Technical Details
 
 Details about the technical implementation, algorithms, and design choices can be added here.
-## Team Members
+## Team Tonic
 
+https://lablab.ai/event/audiocraft-24-hours-hackathon/team-tonic/musicube
+
+- **Tonic (Joseph Pollack)**: CIO
 - **MIND INTERFACES**: Life Science Research (AI)
 - **KP (Kshitij Parashar)**: Technical Product Manager
-- **Tonic (Joseph Pollack)**: CIO
 - **Umar (Muhammad Umar Nawaz)**: Full stack developer
