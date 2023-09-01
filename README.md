@@ -87,7 +87,7 @@ Indulge in the captivating world of MusiCube, where music and interaction harmon
 Details about the technical implementation, algorithms, and design choices can be added here.
 ## Team Members
 
-- ![MIND](PROFILE_IMAGE_LINK) **MIND INTERFACES**: Life Science Research (AI)
-- ![KP](PROFILE_IMAGE_LINK) **KP Kshitij Parashar**: Technical Product Manager
-- ![Joseph](PROFILE_IMAGE_LINK) **Joseph Pollack**: CIO
-- ![Muhammad Umar](PROFILE_IMAGE_LINK) **Muhammad Umar Nawaz**: Full stack developer
+- ![MIND]([PROFILE_IMAGE_LINK](https://lablab.ai/_next/image?url=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F94399418%3Fv%3D4&w=96&q=75)) **MIND INTERFACES**: Life Science Research (AI)
+- ![KP]([PROFILE_IMAGE_LINK](https://lablab.ai/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Flablab-static-eu%2Fimages%252Fusers%252Fcljknkdt000027n1evqasgj0p_t62i93r70_picture.jpg&w=96&q=75)) **KP Kshitij Parashar**: Technical Product Manager
+- ![Tonic]([PROFILE_IMAGE_LINK](https://lablab.ai/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Flablab-static-eu%2Fimages%252Fusers%252Fcll46or7401rmlc0he5s74qpi_ep03p34_picture.jpg&w=96&q=75)) **Joseph Pollack**: CIO
+- ![Umar]([PROFILE_IMAGE_LINK](https://lablab.ai/_next/image?url=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F79453927%3Fv%3D4&w=48&q=75)https://lablab.ai/_next/image?url=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F79453927%3Fv%3D4&w=96&q=75) **Muhammad Umar Nawaz**: Full stack developer
