@@ -57,11 +57,11 @@ To enjoy the MusiCube experience and even contribute to its development, follow 
 
 1. Clone the repository using `git clone https://github.com/Mind-Interfaces/HACKATHON.git` or download the project source code.
 
-Set up a virtual environment using `python -m venv env` and activate it with `env\Scripts\activate` (Windows) or `source env/bin/activate` (Linux/MacOS).
+2. Set up a virtual environment using `python -m venv env` and activate it with `env\Scripts\activate` (Windows) or `source env/bin/activate` (Linux/MacOS).
 
-2. Install the necessary packages from requirements.txt using `pip install -r requirements.txt`.
+3. Install the necessary packages from requirements.txt using `pip install -r requirements.txt`.
 
-3. Launch the project by running the script with `python AudioCraft-3D-POC.py`.
+4. Launch the project by running the script with `python AudioCraft-3D-POC.py`.
 
 Alternatively, for a hassle-free experience, you can directly download and run the executable file from [here](LINK_TO_EXECUTABLE).
 
