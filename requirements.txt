@@ -1,0 +1,5 @@
+gradio==3.21.0
+gradio-client==0.5.0
+pygame==2.5.1
+PyOpenGL==3.1.7
+requests==2.28.2
