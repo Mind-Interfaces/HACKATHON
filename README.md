@@ -24,17 +24,19 @@ The core of MusiCube lies in its ability to generate music by analyzing the user
 
 MusiCube leverages user interactions to influence the music generation process:
 
-- **Green Cube Collisions**: Upon colliding with a green cube, the musicgen model generates a music genre token such as soothing, guitar, rock, pop, and more. These tokens are collected in a prompt list that serves as the basis for music generation. For example, colliding with green cubes that generate tokens like soothing, guitar, and rock results in the prompt list [soothing, guitar, rock].
+- **Green Cube Collisions**: Every time a player collides with a green cube, a music genre token is generated. Tokens can range from "soothing" to "guitar", "rock", "pop", and more. These tokens are accumulated in a list, preparing a prompt for music generation. For instance, a sequence of collisions resulting in the tokens "soothing", "guitar", and "rock" would build a prompt list like [soothing, guitar, rock]. Each green cube collision also adds 10 points to the player's score.
 
-- **Cyan Cube Collisions**: Colliding with a cyan cube removes the last token from the prompt list. This interaction allows users to fine-tune their music prompt.
+- **Cyan Cube Collisions**: A collision with a cyan cube signals the game to send the accumulated prompt list to the MusicGen model, initiating the generation of new background music based on the collected tokens. Successfully sending tokens to MusicGen through a cyan cube collision rewards the player with a bonus of 1000 points per token.
 
-## Scoring System
 
-MusiCube incorporates a scoring system to gamify the experience:
+## 🎖 Scoring System
 
-- Green cube collisions add points to the user's score, incentivizing interactions.
-- Cyan cube collisions subtract points, encouraging strategic decisions.
+MusiCube introduces a dynamic scoring mechanism, adding a competitive edge to the musical journey:
 
+- 🟢 **Green Cube**: Each collision earns you **10 points**. Collect music tokens and watch your score soar!
+- 🟦 **Cyan Cube**: Successfully send tokens to the AI and bag a whopping **1000 points**. Strategize and maximize your score!
+- ⚫ **Dark Cube**: Beware! Colliding with these cubes will cause you to lose all tokens and cost you a life. But fear not, you start with **9 lives**. Strive for that high score!
+ 
 ## Music Generation and Playback
 
 The accumulated prompt list is sent to the musicgen model after a series of collisions. The model then generates music based on the provided prompts. The resulting composition is played in a loop until a new prompt is constructed through further interactions.
