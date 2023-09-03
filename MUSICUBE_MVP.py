@@ -92,7 +92,7 @@ collided_ids = collided_ids.intersection(special_ids)
 collision_count = 0  # To store the total number of collisions
 obstacle_id = 0  # To store the ID of the obstacle
 score = 0  # Initialize the score
-lives = 3  # Starting with 9 lives
+lives = 3  # Starting with 3 lives
 
 
 # Function to draw a cube
@@ -121,7 +121,6 @@ def draw_cube(x, y, z, size, color=(1, 1, 1), player_flashing=False):
                 glColor3f(1, 1, 0)
             else:
                 glColor3f(1, 0, 0)
-
     else:
         glColor3f(*color)
     for edge in edges:
@@ -260,7 +259,7 @@ def main():
                             pygame.time.wait(9000)
                             # Reset the game
                             pygame.mixer.music.unpause()
-                            lives = 9
+                            lives = 3
                             score = 0
                             collision_count = 0
                             obstacles = []
@@ -295,7 +294,7 @@ def main():
                             # Play the different sound
                             surf_sound.play()
                             async_send_prompt(last_collisions)
-                            obs_speed += 0.05
+                            obs_speed += 0.1
                             # Add 1000 points for each keyword in the list
                             score += len(last_collisions) * 1000
                             # Clear the prompt list
