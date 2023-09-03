@@ -1,13 +1,15 @@
+import sys
+import requests
+import random
+from itertools import cycle
 from gradio_client import Client
+
 import pygame
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
-import random
-import requests
-import sys
-
+from moviepy.editor import *
 
 # The URL to the Gradio server
 server_url = "https://tonic-musicgen.hf.space/"
@@ -110,13 +112,12 @@ musical_keywords = [
 ]
 
 # Use the 'cycle' function from itertools to create an infinite loop over the musical_keywords list
-from itertools import cycle
 keyword_cycle = cycle(musical_keywords)
 
 # Apply tilt
-gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
-glTranslatef(0.0, 0.0, -5)
 tilt = 45
+gluPerspective(tilt, (display[0] / display[1]), 0.1, 50.0)
+glTranslatef(0.0, 0.0, -5)
 glPushMatrix()
 glRotatef(tilt, 10, 0, 0)
 
@@ -177,13 +178,9 @@ def drawText(position, textString, color=(255, 255, 255, 255)):
 def is_collision(player_x, player_y, player_z, obstacle_x, obstacle_y, obstacle_z, threshold=0.4):
     return abs(player_x - obstacle_x) < threshold and abs(player_y - obstacle_y) < threshold and abs(player_z - obstacle_z) < threshold
 
-
-##########################
-
-
-
+# 
 def send_prompt(prompt):
-    client = Client("https://tonic-musicgen.hf.space/")
+    client = Client(server_url)
     result = client.predict(
 			"melody",	# str  in 'Model' Radio component
 			prompt,	# str  in 'Input Text' Textbox component
@@ -197,10 +194,6 @@ def send_prompt(prompt):
     )
 
     return result
-
-import requests
-from moviepy.editor import *
-import pygame
 
 # Download the MP4 from the URL
 def download_file(url, local_filename):
@@ -219,7 +212,7 @@ def load_wav(result):
     # Make sure 'result' is not an empty path
     if result:
         # Formulate the full URL
-        full_url = f"https://tonic-musicgen.hf.space{result}"
+        full_url = f"{server_url}{result}"
 
         # Download the MP4 file
         local_mp4 = download_file(full_url, "temp.mp4")
@@ -233,53 +226,7 @@ def load_wav(result):
         # Load into Pygame and Play
         pygame.mixer.music.load("temp.wav")
         pygame.mixer.music.play(loops=-1)
-#########################
 
-# Send Prompt to API <<UNDER CONSTRUCTION>>
-def send_prompt(prompt):
-        client = Client("https://tonic-musicgen.hf.space/")
-        result = client.predict(
-				"melody",	# str  in 'Model' Radio component
-				prompt,	# str  in 'Input Text' Textbox component
-				"https://github.com/gradio-app/gradio/raw/main/test/test_files/audio_sample.wav",	# str (filepath or URL to file) in 'File' Audio component
-				8,	# int | float (numeric value between 1 and 120) in 'Duration' Slider component
-				1,	# int | float  in 'Top-k' Number component
-				1,	# int | float  in 'Top-p' Number component
-				1,	# int | float  in 'Temperature' Number component
-				1,	# int | float  in 'Classifier Free Guidance' Number component
-				fn_index=1
-        )
-
-        return  result
-        # /tmp/gradio/ebb9a3d77258126187d70f2fd038dc104cd764cf/tmpmtof5qvc.mp4
-
-# TURN THE RETURNED DATA INTO A WAV AND LOAD IT INTO PYGAME
-import requests
-from moviepy.editor import AudioFileClip
-import pygame
-
-# Function to download file
-def download_file(url, filename):
-    r = requests.get(url)
-    with open(filename, 'wb') as f:
-        f.write(r.content)
-
-# Function to convert MP4 to WAV
-def convert_mp4_to_wav(mp4_file):
-    audio = AudioFileClip(mp4_file)
-    audio.write_audiofile("temp.wav")
-
-# Function to load WAV into pygame
-def load_wav(result):
-    if result:  # Ensure result is not empty
-        full_url = f"https://tonic-musicgen.hf.space{result}"
-        download_file(full_url, "temp.mp4")
-
-        convert_mp4_to_wav("temp.mp4")
-
-        pygame.init()
-        pygame.mixer.music.load("temp.wav")
-        pygame.mixer.music.play(loops=-1)
 
 # Main Function
 def main():
@@ -310,7 +257,6 @@ def main():
         if keys[pygame.K_ESCAPE]:
             pygame.quit()
             sys.exit()
-
 
         if random.choice([True, True, False, False, False, False, False, False, False, False]):
             # Get the next musical keyword from the cycle
