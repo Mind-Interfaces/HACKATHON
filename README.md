@@ -61,7 +61,7 @@ To enjoy the MusiCube experience and even contribute to its development, follow 
 
 3. Install the necessary packages from requirements.txt using `pip install -r requirements.txt`.
 
-4. Launch the project by running the script with `python AudioCraft-3D-POC.py`.
+4. Launch the project by running the script with `python MUSICUBE-MVP.py`.
 
 Alternatively, for a hassle-free experience, you can directly download and run the executable file from [here](LINK_TO_EXECUTABLE).
 
