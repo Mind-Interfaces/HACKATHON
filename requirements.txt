@@ -4,3 +4,4 @@ pygame==2.5.1
 PyOpenGL==3.1.7
 requests==2.28.2
 moviepy
+websockets
